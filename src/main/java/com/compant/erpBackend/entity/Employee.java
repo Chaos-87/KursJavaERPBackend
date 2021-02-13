@@ -18,5 +18,6 @@ public class Employee {
     @Column
     private String lastName;
 
-
+    @OneToOne(mappedBy = "employee")
+    private Operator operator;
 }
