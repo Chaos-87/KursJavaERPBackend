@@ -1,5 +1,6 @@
 package com.compant.erpBackend.entity;
 
+import com.compant.erpBackend.dto.EmployeeDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,4 +24,13 @@ public class Employee {
 
     @OneToOne(mappedBy = "employee")
     private Operator operator;
+
+    public static Employee of(EmployeeDto employeeDto) {
+        Employee employee = new Employee();
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setLastName(employeeDto.getLastName());
+        employee.setSalary(employeeDto.getSalary());
+
+        return employee;
+    }
 }
