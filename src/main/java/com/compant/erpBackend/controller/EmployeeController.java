@@ -18,8 +18,22 @@ public class EmployeeController {
     private final EmployeeRepository employeeRepository;
 
     @PostMapping("/employees")
-    public EmployeeDto newEmployee(@RequestBody EmployeeDto newEmployee) {
-        return EmployeeDto.of(employeeRepository.save(Employee.of(newEmployee)));
+    public EmployeeDto saveOrUpdateEmployee(@RequestBody EmployeeDto employeeDto) {
+
+        // nowy pracownik
+        if (employeeDto.getIdEmployee() == null) {
+            return EmployeeDto.of(employeeRepository.save(Employee.of(employeeDto)));
+        }
+        // aktualizacja obecnego
+        Optional<Employee> optionalEmployee = employeeRepository.findById(employeeDto.getIdEmployee());
+        if (optionalEmployee.isPresent()) {
+            Employee employee = optionalEmployee.get();
+            employee.updateEmployee(employeeDto);
+            return EmployeeDto.of(employeeRepository.save(employee));
+        } else {
+            throw new RuntimeException("Can't find user with give id: " + employeeDto.getIdEmployee());
+        }
+
     }
 
     @GetMapping("/employees")
