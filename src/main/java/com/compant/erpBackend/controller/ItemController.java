@@ -1,5 +1,6 @@
 package com.compant.erpBackend.controller;
 
+import com.compant.erpBackend.dto.ItemDto;
 import com.compant.erpBackend.entity.Employee;
 import com.compant.erpBackend.entity.Item;
 import com.compant.erpBackend.repository.EmployeeRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +24,8 @@ public class ItemController {
     }
 
     @GetMapping("/items")
-    public List<Item> listItems() {
-        return itemRepository.findAll();
+    public List<ItemDto> listItems() {
+        return itemRepository.findAll().stream().map(ItemDto::of).collect(Collectors.toList());
     }
 
     @DeleteMapping("/items")
