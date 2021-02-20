@@ -1,5 +1,6 @@
 package com.compant.erpBackend.controller;
 
+import com.compant.erpBackend.dto.EmployeeDto;
 import com.compant.erpBackend.dto.ItemDto;
 import com.compant.erpBackend.dto.ItemSaveDto;
 import com.compant.erpBackend.entity.Employee;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,6 +32,13 @@ public class ItemController {
     @GetMapping("/items")
     public List<ItemDto> listItems() {
         return itemRepository.findAll().stream().map(ItemDto::of).collect(Collectors.toList());
+    }
+
+    @GetMapping("/items/{idItem}")
+    public ItemDto getItem(@PathVariable Long idItem) {
+        Optional<Item> optionalItem = itemRepository.findById(idItem);
+
+        return ItemDto.of(optionalItem.get());
     }
 
     @DeleteMapping("/items")
