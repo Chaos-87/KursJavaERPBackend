@@ -1,6 +1,6 @@
 package com.compant.erpBackend.controller;
 
-import com.compant.erpBackend.entity.Employee;
+import com.compant.erpBackend.dto.QuantityTypeDto;
 import com.compant.erpBackend.entity.QuantityType;
 import com.compant.erpBackend.repository.QuantityTypeRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +23,8 @@ public class QuantityTypeController {
     }
 
     @GetMapping("/quantity_types")
-    public List<QuantityType> listQuantityTypes() {
-        return quantityTypeRepository.findAll();
+    public List<QuantityTypeDto> listQuantityTypes() {
+        return quantityTypeRepository.findAll().stream().map(QuantityTypeDto::of).collect(Collectors.toList());
     }
 
     @DeleteMapping("/quantity_types")
